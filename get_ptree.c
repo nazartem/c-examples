@@ -1,4 +1,6 @@
-// по заданному pid, осуществляет поиск пути в дереве процессов до процесса с идентификатором 1 (init)
+/* по заданному pid, осуществляет поиск пути в дереве процессов до процесса с
+идентификатором 1 (init) */
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -16,6 +18,8 @@ int main(int argc, char* argv[]) {
 		FILE* fd = fopen(buf, "r");
 
 		fscanf(fd, "%*d %*s %*c %d", &pid);
+
+		fclose(fd);
 
 		printf("%d\n", pid);
 	}

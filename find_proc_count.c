@@ -1,4 +1,6 @@
-#define _DEFAULT_SOURCE
+/* поиск и подсчет числа процессов с именем needle_name в системе Linux на
+которой выполняется программа */
+
 #include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
