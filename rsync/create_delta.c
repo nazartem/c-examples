@@ -1,34 +1,35 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "librsync.h"
+#include <librsync.h>
 
 
-int main(){
-  FILE *sig_file, *new_file, *delta_file;
-    char const *sig_name;
-    rs_result result;
-    rs_signature_t *sumset;
+int main() {
+  FILE *sig_file = NULL;
+  FILE *new_file = NULL;
+  FILE *delta_file = NULL;
+  rs_stats_t stats;
+  rs_result result;
+  rs_signature_t *sumset;
+  int file_force = 1;
 
-    FILE *fpb = NULL;
-    fpb = fopen("fileb.txt", "r");
+  sig_file = rs_file_open("sig.sig", "rb", file_force);
+  new_file = rs_file_open("new_file.txt", "rb", file_force);
+  delta_file = rs_file_open("delta.delt", "wb", file_force);
 
-    FILE *fpd = NULL;
-    fpd = fopen("delta.delt","w+");
+  result = rs_loadsig_file(sig_file, &sumset, &stats);
 
-    FILE *sigFile = NULL;
-    sigFile = fopen("sig.sig","r");
+  if ((result = rs_build_hash_table(sumset)) != RS_DONE)
+        printf("Ошибка: %d", result);
 
-    rs_signature_t *signature;
+  result = rs_delta_file(sumset, new_file, delta_file, &stats);
 
-    rs_loadsig_file(sigFile, &signature, NULL);
+  rs_file_close(delta_file);
+  rs_file_close(new_file);
+  rs_file_close(sig_file);
 
-    rs_result res = rs_build_hash_table(signature);
+  rs_free_sumset(sumset);
 
-    res = rs_delta_file(signature, fpb, fpd, NULL);
+  printf("Result: %d\n", result);
 
-    printf("Result: %d", res);
-
-    fclose(fpb); fclose(fpd); fclose(sigFile);
-
-    return 0;
+  return 0;
 }
