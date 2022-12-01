@@ -11,7 +11,7 @@ int main() {
 
   basis_file = rs_file_open("basis_file.txt", "rb", file_force);
   delta_file = rs_file_open("delta.delt", "rb", file_force);
-  new_file = rs_file_open("new_file.txt", "wb", file_force);
+  new_file = rs_file_open("new_file_2.txt", "wb", file_force);
 
   result = rs_patch_file(basis_file, delta_file, new_file, &stats);
 
@@ -21,5 +21,5 @@ int main() {
 
   printf("Result code: %d\n", result);
 
-  return result;
+  return 0;
 }
